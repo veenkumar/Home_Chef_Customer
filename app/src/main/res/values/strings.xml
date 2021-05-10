@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">Home Chef</string>
+    <string name="home_chef">HOME CHEF</string>
+    <string name="best_foot">Best food Delivery app</string>
+    <string name="login">Log In</string>
+    <string name="get_started">Get Started</string>
+    <string name="login1">LOGIN</string>
+    <string name="welcome">Welcome Back!</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="confirmpassword">Confirm Password</string>
+    <string name="forget_pwd">Forget Password?</string>
+    <string name="login2">Log in With</string>
+    <string name="fullname">Full Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="gender">Gender</string>
+    <string name="phone">Phone No.</string>
+    <string name="menu">Menu</string>
+    <string name="images">images</string>
+    <string name="signup">SIGNUP</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="profile">My PROFILE</string>
+    <string name="about">About Us</string>
+    <string name="rating">Give a rating</string>
+    <string name="feedback">Feedback</string>
+    <string name="policy">Privacy policy</string>
+    <string name="user">USERS</string>
+    <string name="dishes">DISHES</string>
+    <string name="tandoori_soya_chapp">Tandoori Soya Chapp</string>
+    <string name="indian">Indian</string>
+    <string name="likes">Likes</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="all_ready_have_an_account">All ready have an account.</string>
+    <string name="get_login">Get Login</string>
+    <string name="register">Register</string>
+    <string name="customer_registration">CUSTOMER REGISTRATION</string>
+
+    <string name="selected_item">Selected item:</string>
+
+    <string name="dish">Dish</string>
+    <string name="chef">Chef</string>
+    <string name="cart">Cart</string>
+    <string name="user_">User</string>
+    <string name="home">Home</string>
+    <string name="our_menu">Our Menu</string>
+
+    <string name="facebook_app_id">199297128517141</string>
+    <string name="fb_login_protocol_scheme">fb199297128517141</string>
+
+    <string name="sign_in_with_google">Sign in With Google</string>
+    <string name="example">Example</string>
+    <string name="id">ID</string>
+    <string name="name">Name</string>
+    <string name="email_address">Email address</string>
+    <string name="sign_out">Sign out</string>
+
+</resources>

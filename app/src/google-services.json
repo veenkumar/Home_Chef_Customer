@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "485480812821",
+    "project_id": "homechefcustomer-fdf5e",
+    "storage_bucket": "homechefcustomer-fdf5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485480812821:android:8d88f8a85f368f3e2f991c",
+        "android_client_info": {
+          "package_name": "com.veen.homechef"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485480812821-7njmlc73p8bflntt78te4duseu0vk48v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.veen.homechef",
+            "certificate_hash": "5c4960a0de9e272e108f0361fcbd6a633c487e04"
+          }
+        },
+        {
+          "client_id": "485480812821-sfhke74bs554ktaplt06tufq7eim4dtm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK-vcuk1TVGiFNU69viVd-2GHOKL_oP0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485480812821-sfhke74bs554ktaplt06tufq7eim4dtm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
