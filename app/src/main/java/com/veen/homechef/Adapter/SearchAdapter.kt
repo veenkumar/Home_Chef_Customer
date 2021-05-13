@@ -129,72 +129,124 @@ class SearchAdapter(private val context: Context, private val data: List<SearchD
 
 
         holder.addcart.setOnClickListener {
-            try {
-                if (itemprice == "") {
-                    var gettoken = AppUtils.getsavetoken(context)
-                    var getsaveloginID = AppUtils.getsaveloginID(context).toInt()
-                    var getsavechefID = AppUtils.getsavechefID(context).toInt()
-                    var itemid = data[position].id.toInt()
+            val getsaveloginID = AppUtils.getsaveloginID(context)
+            val getsavechefID = AppUtils.getsavechefID(context).toInt()
+            val itemid = data[position].id.toInt()
+            val getsavePhoneUnique = AppUtils.getsavePhoneUnique(context)
 
-                    RetrofitInstance.instence?.addtocart(
-                        gettoken, AddCartRequest(
-                            getsavechefID,
-                            itemid,
-                            holder.testplate.text.toString(),
-                            holder.testamount.text.toString(),
-                            "1",
-                            getsaveloginID
-                        )
-                    )!!.enqueue(object : Callback<AddCartResponse> {
-                        override fun onResponse(
-                            call: Call<AddCartResponse>,
-                            response: Response<AddCartResponse>
-                        ) {
-                            if (response.body()!!.status == true) {
-                                Toast.makeText(context, "Item added.", Toast.LENGTH_SHORT).show()
-                            } else {
-                                Toast.makeText(context, "Item already added.", Toast.LENGTH_SHORT).show()
+            if (getsaveloginID != "") {
+                try {
+                    if (itemprice == "") {
+                        RetrofitInstance.instence?.addtocart(AddCartRequest(
+                                getsavechefID,
+                                itemid,
+                                holder.testplate.text.toString(),
+                                holder.testamount.text.toString(),
+                                "1",
+                                getsaveloginID
+                            )
+                        )!!.enqueue(object : Callback<AddCartResponse> {
+                            override fun onResponse(
+                                call: Call<AddCartResponse>,
+                                response: Response<AddCartResponse>
+                            ) {
+                                if (response.body()!!.status == true) {
+                                    Toast.makeText(context, "Item added.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(context, "Item already added.", Toast.LENGTH_SHORT).show()
+                                }
                             }
-                        }
 
-                        override fun onFailure(call: Call<AddCartResponse>, t: Throwable) {
-                            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
-                        }
-                    })
-                } else {
-                    var gettoken = AppUtils.getsavetoken(context)
-                    var getsaveloginID = AppUtils.getsaveloginID(context).toInt()
-                    var getsavechefID = AppUtils.getsavechefID(context).toInt()
-                    var itemid = data[position].id.toInt()
-
-                    RetrofitInstance.instence?.addtocart(
-                        gettoken, AddCartRequest(
-                            getsavechefID,
-                            itemid,
-                            itemplate!!,
-                            itemprice!!,
-                            "1",
-                            getsaveloginID
-                        )
-                    )!!.enqueue(object : Callback<AddCartResponse> {
-                        override fun onResponse(
-                            call: Call<AddCartResponse>,
-                            response: Response<AddCartResponse>
-                        ) {
-                            if (response.body()!!.status == true) {
-                                Toast.makeText(context, "Item added.", Toast.LENGTH_SHORT).show()
-                            } else {
-                                Toast.makeText(context, "Item already added.", Toast.LENGTH_SHORT).show()
+                            override fun onFailure(call: Call<AddCartResponse>, t: Throwable) {
+                                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
                             }
-                        }
+                        })
+                    } else {
+                        RetrofitInstance.instence?.addtocart(AddCartRequest(
+                                getsavechefID,
+                                itemid,
+                                itemplate!!,
+                                itemprice!!,
+                                "1",
+                                getsaveloginID
+                            )
+                        )!!.enqueue(object : Callback<AddCartResponse> {
+                            override fun onResponse(
+                                call: Call<AddCartResponse>,
+                                response: Response<AddCartResponse>
+                            ) {
+                                if (response.body()!!.status == true) {
+                                    Toast.makeText(context, "Item added.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(context, "Item already added.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
 
-                        override fun onFailure(call: Call<AddCartResponse>, t: Throwable) {
-                            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
-                        }
-                    })}
-            } catch (e: Exception) {
-                e.printStackTrace()
+                            override fun onFailure(call: Call<AddCartResponse>, t: Throwable) {
+                                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                            }
+                        })}
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } else {
+                try {
+                    if (itemprice == "") {
+                        RetrofitInstance.instence?.addtocart(AddCartRequest(
+                                getsavechefID,
+                                itemid,
+                                holder.testplate.text.toString(),
+                                holder.testamount.text.toString(),
+                                "1",
+                                getsavePhoneUnique
+                            )
+                        )!!.enqueue(object : Callback<AddCartResponse> {
+                            override fun onResponse(
+                                call: Call<AddCartResponse>,
+                                response: Response<AddCartResponse>
+                            ) {
+                                if (response.body()!!.status == true) {
+                                    Toast.makeText(context, "Item added.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(context, "Item already added.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<AddCartResponse>, t: Throwable) {
+                                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    } else {
+                        RetrofitInstance.instence?.addtocart(AddCartRequest(
+                                getsavechefID,
+                                itemid,
+                                itemplate!!,
+                                itemprice!!,
+                                "1",
+                                getsavePhoneUnique
+                            )
+                        )!!.enqueue(object : Callback<AddCartResponse> {
+                            override fun onResponse(
+                                call: Call<AddCartResponse>,
+                                response: Response<AddCartResponse>
+                            ) {
+                                if (response.body()!!.status == true) {
+                                    Toast.makeText(context, "Item added.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(context, "Item already added.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<AddCartResponse>, t: Throwable) {
+                                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                            }
+                        })}
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
+
+
         }
     }
 

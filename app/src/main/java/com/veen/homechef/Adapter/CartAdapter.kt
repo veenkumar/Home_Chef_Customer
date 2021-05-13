@@ -20,6 +20,7 @@ import com.veen.homechef.R
 import com.veen.homechef.Utils.AppUtils
 import com.veen.homechef.Utils.CartListner
 import com.squareup.picasso.Picasso
+import com.veen.homechef.db.AddToCart
 import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,10 +28,9 @@ import retrofit2.Response
 
 
 class CartAdapter(
-    private val context: Context,
-    private val pagerefresh: CartListner,
-    private val data: List<CartData>
-) :
+        private val context: Context,
+        private val pagerefresh: CartListner,
+        private val data: List<CartData>) :
     RecyclerView.Adapter<CartAdapter.ItemViewAbout> () {
     inner class ItemViewAbout(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cartimage = itemView.findViewById<CircleImageView>(R.id.cart_image)
@@ -75,59 +75,49 @@ class CartAdapter(
             )
 
             var updateitemid = data[position].id.toInt()
-            var gettoken = AppUtils.getsavetoken(context)
             val getsaveloginID = AppUtils.getsaveloginID(context)
+            val getsavePhoneUnique = AppUtils.getsavePhoneUnique(context)
 
             holder.cartadd.setOnClickListener {
                 holder.cartlayout.visibility = View.GONE
                 holder.cartprogreebar.visibility = View.VISIBLE
                 var qty = data[position].qty.toInt() + 1
 
-                try {
-                    RetrofitInstance.instence?.updatecartview(
-                        gettoken, CartUpdateRequest(
+                if (getsaveloginID != "") {
+                    try {
+                        RetrofitInstance.instence?.updatecartview(CartUpdateRequest(
                             updateitemid,
                             qty,
-                            getsaveloginID.toInt()
+                            getsaveloginID
                         )
-                    )!!.enqueue(object : Callback<CartUpdateResponse> {
-                        override fun onResponse(
-                            call: Call<CartUpdateResponse>,
-                            response: Response<CartUpdateResponse>
-                        ) {
-                            if (response.isSuccessful) {
-                                holder.cartlayout.visibility = View.VISIBLE
-                                holder.cartprogreebar.visibility = View.GONE
-                                Toast.makeText(context, "Item qty updated.", Toast.LENGTH_SHORT)
-                                    .show()
-                                pagerefresh.onQuantityListner()
+                        )!!.enqueue(object : Callback<CartUpdateResponse> {
+                            override fun onResponse(
+                                call: Call<CartUpdateResponse>,
+                                response: Response<CartUpdateResponse>
+                            ) {
+                                if (response.isSuccessful) {
+                                    holder.cartlayout.visibility = View.VISIBLE
+                                    holder.cartprogreebar.visibility = View.GONE
+                                    Toast.makeText(context, "Item qty updated.", Toast.LENGTH_SHORT)
+                                        .show()
+                                    pagerefresh.onQuantityListner()
+                                }
                             }
-                        }
 
-                        override fun onFailure(call: Call<CartUpdateResponse>, t: Throwable) {
-                            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
-                        }
-                    })
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-
-            holder.cartdelete.setOnClickListener {
-                holder.cartlayout.visibility = View.GONE
-                holder.cartprogreebar.visibility = View.VISIBLE
-                var qtydelete = data[position].qty.toInt()
-
-                if (qtydelete > 1) {
-                    var qtydelete1 = data[position].qty.toInt() - 1
-
+                            override fun onFailure(call: Call<CartUpdateResponse>, t: Throwable) {
+                                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
                     try {
-                        RetrofitInstance.instence?.updatecartview(
-                            gettoken, CartUpdateRequest(
-                                updateitemid,
-                                qtydelete1,
-                                getsaveloginID.toInt()
-                            )
+                        RetrofitInstance.instence?.updatecartview(CartUpdateRequest(
+                            updateitemid,
+                            qty,
+                            getsavePhoneUnique
+                        )
                         )!!.enqueue(object : Callback<CartUpdateResponse> {
                             override fun onResponse(
                                 call: Call<CartUpdateResponse>,
@@ -150,40 +140,143 @@ class CartAdapter(
                         e.printStackTrace()
                     }
                 }
+
+
+            }
+
+            holder.cartdelete.setOnClickListener {
+                holder.cartlayout.visibility = View.GONE
+                holder.cartprogreebar.visibility = View.VISIBLE
+                var qtydelete = data[position].qty.toInt()
+
+                if (qtydelete > 1) {
+                    var qtydelete1 = data[position].qty.toInt() - 1
+
+                    if (getsaveloginID != "") {
+                        try {
+                            RetrofitInstance.instence?.updatecartview(CartUpdateRequest(
+                                updateitemid,
+                                qtydelete1,
+                                getsaveloginID
+                            )
+                            )!!.enqueue(object : Callback<CartUpdateResponse> {
+                                override fun onResponse(
+                                    call: Call<CartUpdateResponse>,
+                                    response: Response<CartUpdateResponse>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        holder.cartlayout.visibility = View.VISIBLE
+                                        holder.cartprogreebar.visibility = View.GONE
+                                        Toast.makeText(context, "Item qty updated.", Toast.LENGTH_SHORT)
+                                            .show()
+                                        pagerefresh.onQuantityListner()
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<CartUpdateResponse>, t: Throwable) {
+                                    Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        try {
+                            RetrofitInstance.instence?.updatecartview(CartUpdateRequest(
+                                updateitemid,
+                                qtydelete1,
+                                getsavePhoneUnique
+                            )
+                            )!!.enqueue(object : Callback<CartUpdateResponse> {
+                                override fun onResponse(
+                                    call: Call<CartUpdateResponse>,
+                                    response: Response<CartUpdateResponse>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        holder.cartlayout.visibility = View.VISIBLE
+                                        holder.cartprogreebar.visibility = View.GONE
+                                        Toast.makeText(context, "Item qty updated.", Toast.LENGTH_SHORT)
+                                            .show()
+                                        pagerefresh.onQuantityListner()
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<CartUpdateResponse>, t: Throwable) {
+                                    Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                                }
+                            })
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+
+                }
             }
 
             holder.carttrash.setOnClickListener {
                 holder.cartlayout.visibility = View.GONE
                 holder.cartprogreebar.visibility = View.VISIBLE
 
-                try {
-                    RetrofitInstance.instence?.deletecart(
-                        gettoken, DeleteCartRequest(
+                if (getsaveloginID != "") {
+                    try {
+                        RetrofitInstance.instence?.deletecart(DeleteCartRequest(
                             updateitemid,
-                            getsaveloginID.toInt()
+                            getsaveloginID
                         )
-                    )!!.enqueue(object : Callback<DeleteCartResponse> {
-                        override fun onResponse(
-                            call: Call<DeleteCartResponse>,
-                            response: Response<DeleteCartResponse>
-                        ) {
-                            if (response.isSuccessful) {
-                                holder.cartlayout.visibility = View.VISIBLE
-                                holder.cartprogreebar.visibility = View.GONE
-                                Toast.makeText(context, "Item deleted.", Toast.LENGTH_SHORT).show()
-                                pagerefresh.onQuantityListner()
+                        )!!.enqueue(object : Callback<DeleteCartResponse> {
+                            override fun onResponse(
+                                call: Call<DeleteCartResponse>,
+                                response: Response<DeleteCartResponse>
+                            ) {
+                                if (response.isSuccessful) {
+                                    holder.cartlayout.visibility = View.VISIBLE
+                                    holder.cartprogreebar.visibility = View.GONE
+                                    Toast.makeText(context, "Item deleted.", Toast.LENGTH_SHORT).show()
+                                    pagerefresh.onQuantityListner()
 //                                context.startActivity(Intent(context, MainActivity::class.java))
+                                }
                             }
-                        }
 
-                        override fun onFailure(call: Call<DeleteCartResponse>, t: Throwable) {
-                            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
-                        }
-                    })
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                            override fun onFailure(call: Call<DeleteCartResponse>, t: Throwable) {
+                                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else {
+                    try {
+                        RetrofitInstance.instence?.deletecart(DeleteCartRequest(
+                            updateitemid,
+                            getsavePhoneUnique
+                        )
+                        )!!.enqueue(object : Callback<DeleteCartResponse> {
+                            override fun onResponse(
+                                call: Call<DeleteCartResponse>,
+                                response: Response<DeleteCartResponse>
+                            ) {
+                                if (response.isSuccessful) {
+                                    holder.cartlayout.visibility = View.VISIBLE
+                                    holder.cartprogreebar.visibility = View.GONE
+                                    Toast.makeText(context, "Item deleted.", Toast.LENGTH_SHORT).show()
+                                    pagerefresh.onQuantityListner()
+//                                context.startActivity(Intent(context, MainActivity::class.java))
+                                }
+                            }
+
+                            override fun onFailure(call: Call<DeleteCartResponse>, t: Throwable) {
+                                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
+
+
             }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }

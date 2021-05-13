@@ -43,7 +43,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
         try {
-            MyClass.activity = requireActivity()
             user_profile = root.findViewById(R.id.profile_update)
             user_pass = root.findViewById(R.id.profile_pass)
             user_order = root.findViewById(R.id.profile_order)
@@ -116,17 +115,15 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 startActivity(Intent(requireContext(), GiftCardDetails::class.java))
             }
             R.id.profile_logout -> {
-                var deleteloginID = AppUtils.deleteloginID(requireContext())
-                deleteloginID
-                startActivity(Intent(requireContext(), Splash::class.java))
-                ProfileFragment.MyClass.activity?.finish()
-            }
-        }
-    }
+                requireContext().getSharedPreferences("Login", 0).edit().clear().apply()
+                requireContext().getSharedPreferences("token", 0).edit().clear().apply()
+                requireContext().getSharedPreferences("chefID", 0).edit().clear().apply()
+                requireContext().getSharedPreferences("order", 0).edit().clear().apply()
+                requireContext().getSharedPreferences("Unique", 0).edit().clear().apply()
 
-    class MyClass{
-        companion object{
-            var activity: Activity? = null
+                startActivity(Intent(requireContext(), Splash::class.java))
+                activity?.finish()
+            }
         }
     }
 }

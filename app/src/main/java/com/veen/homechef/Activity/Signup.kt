@@ -398,15 +398,9 @@ class Signup : AppCompatActivity() {
                     if (response.isSuccessful) {
                         if (response.body()!!.status) {
                             val LoginID = response.body()!!.data.id
-                            val EmailID = response.body()!!.data.email
-                            val ImageID = response.body()!!.data.image
-                            val NameID = response.body()!!.data.name
                             val token = response.body()!!.token
 
                             AppUtils.saveloginID(applicationContext, LoginID)
-                            AppUtils.saveemailID(applicationContext, EmailID)
-                            AppUtils.saveImageID(applicationContext, ImageID)
-                            AppUtils.savenameID(applicationContext, NameID)
                             AppUtils.savetoken(applicationContext, token)
                             Toast.makeText(
                                 applicationContext,

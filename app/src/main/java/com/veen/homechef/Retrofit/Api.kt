@@ -19,6 +19,8 @@ import com.veen.homechef.Model.Profile.ChangePass.ChangePassRequest
 import com.veen.homechef.Model.Profile.ChangePass.ChangePassResponse
 import com.veen.homechef.Model.Login.LoginRequest
 import com.veen.homechef.Model.Login.LoginResponse
+import com.veen.homechef.Model.Login.Relogin.ReloginReq
+import com.veen.homechef.Model.Login.Relogin.ReloginRes
 import com.veen.homechef.Model.Profile.giftcarddetails.GiftCardDetailsRequest
 import com.veen.homechef.Model.Profile.giftcarddetails.GiftCardDetailsResponse
 import com.veen.homechef.Model.Profile.myorder.MyOrderRequest
@@ -125,49 +127,42 @@ interface Api {
     @Headers("Content-Type: application/json")
     @POST("our_menu")
     fun menu(
-        @Header("Authorization")token:String,
         @Body menuRequest: MenuRequest
     ): Call<MenuResponse>
 
     @Headers("Content-Type: application/json")
     @POST("our_menu_item")
     fun menuitem(
-        @Header("Authorization")token:String,
         @Body menuItemRequest: MenuItemRequest
     ): Call<MenuitemResponse>
 
     @Headers("Content-Type: application/json")
     @POST("add_to_cart")
     fun addtocart(
-        @Header("Authorization")token:String,
         @Body addCartRequest: AddCartRequest
     ): Call<AddCartResponse>
 
     @Headers("Content-Type: application/json")
     @POST("cart")
     fun cartview(
-        @Header("Authorization")token:String,
         @Body cartViewRequest: CartViewRequest
     ): Call<CartViewResponse>
 
     @Headers("Content-Type: application/json")
     @POST("update_qty")
     fun updatecartview(
-        @Header("Authorization")token:String,
         @Body cartUpdateRequest: CartUpdateRequest
     ): Call<CartUpdateResponse>
 
     @Headers("Content-Type: application/json")
     @POST("delete_item")
     fun deletecart(
-        @Header("Authorization")token:String,
         @Body deleteCartRequest: DeleteCartRequest
     ): Call<DeleteCartResponse>
 
     @Headers("Content-Type: application/json")
     @POST("our_menu_subcategory")
     fun subcategory(
-        @Header("Authorization")token:String,
         @Body menuSubRequest: MenuSubRequest
     ): Call<MenuSubResponse>
 
@@ -244,6 +239,13 @@ interface Api {
         @Header("Authorization")token:String,
         @Body ratingReq: RatingReq
     ): Call<RatingRes>
+
+    @Headers("Content-Type: application/json")
+    @POST("update_cart_afterlogin")
+    fun relogin(
+        @Header("Authorization")token:String,
+        @Body reloginReq: ReloginReq
+    ): Call<ReloginRes>
 
 //    @Headers("Content-Type: application/json")
 //    @GET("get_home")

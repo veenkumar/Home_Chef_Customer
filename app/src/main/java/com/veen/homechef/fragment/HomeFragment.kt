@@ -119,9 +119,8 @@ class HomeFragment : Fragment() {
 
     private fun ChefDetails() {
         try {
-            var gettoken = AppUtils.getsavetoken(context)
                 RetrofitInstance.instence?.menu(
-                    gettoken, MenuRequest(
+                    MenuRequest(
                         "",
                         "",
                         ""

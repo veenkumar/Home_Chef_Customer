@@ -6,5 +6,5 @@ data class AddCartRequest(
     val plate_size: String,
     val price: String,
     val qty: String,
-    val user_id: Int
+    val user_id: String
 )

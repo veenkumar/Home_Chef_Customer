@@ -72,7 +72,7 @@ class MainItemDetails : Fragment() {
 
     private fun FoodMenu(gettoken: String, getsavechefID: String, getfoodsubID: String) {
         try {
-            RetrofitInstance.instence?.menuitem(gettoken, MenuItemRequest(
+            RetrofitInstance.instence?.menuitem(MenuItemRequest(
                 getsavechefID.toInt(),
                 getfoodsubID.toInt()
             )
@@ -99,7 +99,7 @@ class MainItemDetails : Fragment() {
 
     private fun FoodMenuItem(gettoken: String, getsavechefID: Int) {
         try {
-            RetrofitInstance.instence?.menuitem(gettoken, MenuItemRequest(
+            RetrofitInstance.instence?.menuitem(MenuItemRequest(
                 getsavechefID,
                 0
             )
@@ -127,17 +127,15 @@ class MainItemDetails : Fragment() {
     private fun foodSubCategory() {
         try {
             var getchefID = AppUtils.getsavechefID(requireContext()).toInt()
-//        var getchefID = intent.getStringExtra("chefID")!!.toInt()
-            var gettoken = AppUtils.getsavetoken(requireContext())
 
-            RetrofitInstance.instence?.subcategory(gettoken, MenuSubRequest(
+            RetrofitInstance.instence?.subcategory(MenuSubRequest(
                 getchefID
             ))!!.enqueue(object : Callback<MenuSubResponse> {
                 override fun onResponse(
                     call: Call<MenuSubResponse>,
                     response: Response<MenuSubResponse>
                 ) {
-                    if (response.body()!!.status == true) {
+                    if (response.isSuccessful) {
                         mainitemlayout.visibility = View.VISIBLE
                         progressBar_mainitem.visibility = View.GONE
                         if (response.isSuccessful) {

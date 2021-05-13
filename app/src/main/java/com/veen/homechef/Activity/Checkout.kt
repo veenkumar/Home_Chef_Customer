@@ -1,5 +1,6 @@
 package com.veen.homechef.Activity
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -78,6 +79,8 @@ class Checkout : AppCompatActivity(), CouponListner {
     val TAG = "MainActivity"
 
     private lateinit var mAlertDialog: AlertDialog
+    private var currentLocationLatitute: String? = ""
+    private var currentLocationLongitute: String? = ""
 
     private lateinit var checkoutrecyclerView: RecyclerView
     private lateinit var adapter: CheckoutItemAdapter
@@ -107,6 +110,8 @@ class Checkout : AppCompatActivity(), CouponListner {
 
             val getsaveloginID = AppUtils.getsaveloginID(applicationContext)
             val gettoken = AppUtils.getsavetoken(applicationContext)
+
+            getCurrentLocation()
 
             FirebaseService.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
             FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
@@ -391,22 +396,24 @@ class Checkout : AppCompatActivity(), CouponListner {
         val geocoder = Geocoder(this, Locale.getDefault())
         var addresses:List<Address>
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
+        if (isPermissionGranted()) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return
+            }
         }
         LocationServices.getFusedLocationProviderClient(this)
             .requestLocationUpdates(locationRequest,object : LocationCallback(){
@@ -419,6 +426,9 @@ class Checkout : AppCompatActivity(), CouponListner {
 
                         var latitude = locationResult.locations.get(locIndex).latitude
                         var longitude = locationResult.locations.get(locIndex).longitude
+
+                        currentLocationLatitute = latitude.toString()
+                        currentLocationLongitute = longitude.toString()
 
                         addresses = geocoder.getFromLocation(latitude,longitude,1)
 
@@ -433,6 +443,12 @@ class Checkout : AppCompatActivity(), CouponListner {
                 }
             }, Looper.getMainLooper())
 
+    }
+
+    private fun isPermissionGranted() : Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onCouponRefresh() {

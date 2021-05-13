@@ -28,6 +28,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.veen.donorsystem.api.RetrofitInstance
 import com.veen.homechef.Model.Login.LoginRequest
 import com.veen.homechef.Model.Login.LoginResponse
+import com.veen.homechef.Model.Login.Relogin.ReloginReq
+import com.veen.homechef.Model.Login.Relogin.ReloginRes
 import com.veen.homechef.R
 import com.veen.homechef.Utils.AppUtils
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -129,14 +131,6 @@ class Login : AppCompatActivity() {
             startActivity(Intent(applicationContext, Signup::class.java))
         }
 
-        remberme.setOnClickListener {
-            if (remberme.isChecked) {
-                 val remembermeID = "1"
-                AppUtils.savecheckID(applicationContext, remembermeID)
-            }
-        }
-
-
 //        loginemail.setText("bk399aaa@gmail.com")
 //        loginpass.setText("123")
 
@@ -219,15 +213,9 @@ class Login : AppCompatActivity() {
                         if (response.isSuccessful) {
                             if (response.body()!!.status == true) {
                                 val LoginID = response.body()!!.data.id
-                                val EmailID = response.body()!!.data.email
-                                val ImageID = response.body()!!.data.image
-                                val NameID = response.body()!!.data.name
                                 val token = response.body()!!.token
 
                                 AppUtils.saveloginID(applicationContext, LoginID)
-                                AppUtils.saveemailID(applicationContext, EmailID)
-                                AppUtils.saveImageID(applicationContext, ImageID)
-                                AppUtils.savenameID(applicationContext, NameID)
                                 AppUtils.savetoken(applicationContext, token)
 
                                 Toast.makeText(
@@ -236,6 +224,7 @@ class Login : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                 )
                                         .show()
+                                afterlogin(LoginID, token)
                                 startActivity(Intent(this@Login, MainActivity::class.java))
                                 finish()
                                 loginrefresh.isRefreshing = false
@@ -255,6 +244,28 @@ class Login : AppCompatActivity() {
                     }
                 })
             loginrefresh.isRefreshing = false
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun afterlogin(loginID: String, token: String) {
+        try {
+            val getsavePhoneUnique = AppUtils.getsavePhoneUnique(applicationContext)
+            RetrofitInstance.instence?.relogin(token, ReloginReq(
+                getsavePhoneUnique,
+                loginID.toInt()
+            ))!!.enqueue(object : Callback<ReloginRes> {
+                override fun onResponse(call: Call<ReloginRes>, response: Response<ReloginRes>) {
+                    if (response.isSuccessful) {
+                        Log.d("TAG", "onResponse: Success")
+                    }
+                }
+
+                override fun onFailure(call: Call<ReloginRes>, t: Throwable) {
+                    Log.d("TAG", "onFailure: failed")
+                }
+            })
         } catch (e: Exception) {
             e.printStackTrace()
         }
