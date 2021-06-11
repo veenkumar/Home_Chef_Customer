@@ -340,7 +340,9 @@ class Checkout : AppCompatActivity(), CouponListner {
                 0,
                 cphone!!.text.toString(),
                 cpincode!!.text.toString(),
-                getsaveloginID.toInt()
+                getsaveloginID.toInt(),
+                currentLocationLatitute.toString(),
+                currentLocationLongitute.toString()
             ))!!.enqueue(object : Callback<OrderResponse> {
                 override fun onResponse(call: Call<OrderResponse>, response: Response<OrderResponse>) {
                     if (response.body()!!.status == true) {

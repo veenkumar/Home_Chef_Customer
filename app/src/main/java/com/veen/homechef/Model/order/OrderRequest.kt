@@ -8,5 +8,7 @@ data class OrderRequest(
     val payment_type: Int,
     val phone: String,
     val pincode: String,
-    val user_id: Int
+    val user_id: Int,
+    val lat: String,
+    val lng: String
 )
